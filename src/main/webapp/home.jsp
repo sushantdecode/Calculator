@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Hello</title>
+<title>Home</title>
 </head>
 <body>
-	Hi There
+	Welcome!
 </body>
 </html>
