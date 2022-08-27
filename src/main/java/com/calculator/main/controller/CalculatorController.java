@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.calculator.main.model.Numbers;
 import com.calculator.service.Addition;
+import com.calculator.service.CalculationFactory;
 import com.calculator.service.Multiplication;
 import com.calculator.service.PerformOperation;
 import com.calculator.service.Subtraction;
@@ -27,29 +28,20 @@ public class CalculatorController {
 	@GetMapping("/calculate")
 	public String calculateResult(@ModelAttribute("values") Numbers values) {
 
-		if (values.getOperation().equals("add")) {
-			log.info("Addition Operation Called");
-			PerformOperation addition = new Addition();
-			int result = addition.performOperation(values);
-			return "Result:" + result;
-			
-		} else if (values.getOperation().equals("subtract")) {
-			log.info("Subtract Operation Called");
-			PerformOperation subtraction = new Subtraction();
-			int result = subtraction.performOperation(values);
-			return "Result:" + result;
-			
-		} else if (values.getOperation().equals("multiply")) {
-			log.info("Multiply Operation Called");
-			PerformOperation multiplication = new Multiplication();
-			int result = multiplication.performOperation(values);
-			return "Result:" + result;
-			
-		} else {
-			log.warning("Inavlid Request");
-			return "Invalid Request. Please try with different operation";
-			
+		PerformOperation operation = CalculationFactory.getOperation(values.getOperation());
+		String result;
+		
+		log.info("Calculate Result Method Called");
+		
+		try {
+			result = "Result is: " + operation.performOperation(values);
 		}
+		catch(Exception e){
+			log.warning("Inavlid Request");
+			return "Invalid Request. Please try with different operation \n" + e;
+		}
+		
+		return result;
 	}
 
 }
